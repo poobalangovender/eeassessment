@@ -9,20 +9,20 @@ namespace EEHotelBookingAssessment.TestLibrary
 {
     public class Testbase
     {
-        public MyApiComponent ApiComponent;
+        //public ApiComponent ApiComponent;
 
-        public void Init()
-        {
-            ApiComponent = new MyApiComponent();
-        }
+        //public void Init()
+        //{
+        //    ApiComponent = new ApiComponent();
+        //}
 
-        [SetUp]
-        public void SetUp()
-        {
-            if (ApiComponent == null)
-            {
-                Init();
-            }
-        }
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    if (ApiComponent == null)
+        //    {
+        //        Init();
+        //    }
+        //}
     }
 }

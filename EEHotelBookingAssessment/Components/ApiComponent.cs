@@ -1,35 +1,54 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using System.Net.Http.Headers;
-//using System.Net.Http;
-//using System.Security.Authentication;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RestSharp;
+using System.Security.Cryptography.X509Certificates;
 
-//namespace EEHotelBookingAssessment.Components
-//{
-//    public class ApiComponent
-//    {
-//        public async Task<HttpResponseMessage> SendAsync(HttpPacket httpPacket, CancellationToken cancellationToken = default)
-//        {
-//            return await ProcessAsync(httpPacket, cancellationToken)
-//        }
+namespace EEHotelBookingAssessment.Components
+{
+    public class ApiComponent
+    {
+        public IRestResponse Get(String endpoint, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
+        {
+            return Process(Method.GET, endpoint, null, useSecureTokenService, headers);
+        }
 
-//        private async Task<HttpResponseMessage> ProcessAsync(HttpPacket httpPacket, CancellationToken cancellationToken = default)
-//        {
-//            try
-//            {
-//                var handler = new HttpClientHandler();
-//                using var httpClient = new HttpClient(handler);
+        public IRestResponse Post(String endpoint,dynamic model, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
+        {
+            return Process(Method.POST, endpoint, model, useSecureTokenService, headers);
+        }
 
-//                handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors => { return true; };
+        //public IRestResponse Post(String endpoint, dynamic model,X509Certificate2Collection certificates, string contentType = null, IDictionary<string, string> headers = null)
+        //{
+        //    return Process(Method.POST, endpoint, model, certificates, contentType, headers);
+        //}
 
-//                handler.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
+        public IRestResponse Delete(String endpoint, string model, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
+        {
+            return Process(Method.DELETE, endpoint, model, useSecureTokenService, headers);
+        }
 
+        private IRestResponse Process(Method method , string endpoint, string model, bool useSecureTokenService = false, IDictionary<string, string> headers = null, string contentType = null, X509Certificate2Collection certificates = null)
+        {
+            var restClient = new RestClient();
+            var restRequest = new RestRequest(method);
 
-//                )
-//            }
-//        }
-//    }
-//}
+            if (headers != null) restRequest.AddHeaders(headers);
+
+            if (certificates != null) restClient.ClientCertificates = certificates;
+
+            restClient.BaseUrl = new Uri(endpoint);
+
+            if (method != Method.GET)
+            {
+                restRequest.AddParameter(contentType, model, ParameterType.RequestBody);
+            }
+
+            var response = restClient.Execute(restRequest);
+
+            return response;
+        }
+    }
+}

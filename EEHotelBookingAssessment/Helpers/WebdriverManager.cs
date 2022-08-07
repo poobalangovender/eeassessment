@@ -1,10 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EEHotelBookingAssessment.Helpers
 {
@@ -98,6 +93,14 @@ namespace EEHotelBookingAssessment.Helpers
                     Assert.Fail("Browser not supported");
                     break;
             }
+        }
+
+        public void TakeScreenshot(string path)
+        {
+            ITakesScreenshot takesScreenshot = _webDriver as ITakesScreenshot;
+            Screenshot ss = takesScreenshot.GetScreenshot();
+                //((ITakesScreenshot)Driver).GetScreenshot();
+            ss.SaveAsFile(path);
         }
     }
 }

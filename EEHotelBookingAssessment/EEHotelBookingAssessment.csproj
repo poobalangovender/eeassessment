@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Configurations\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
     <Folder Include="Static\" />
   </ItemGroup>
 
