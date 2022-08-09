@@ -10,34 +10,29 @@ namespace EEHotelBookingAssessment.Components
 {
     public class ApiComponent
     {
-        public IRestResponse Get(String endpoint, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
+        public IRestResponse Get(String endpoint, IDictionary<string, string> headers = null)
         {
-            return Process(Method.GET, endpoint, null, useSecureTokenService, headers);
+            return Process(Method.GET, endpoint,null, headers);
         }
 
-        public IRestResponse Post(String endpoint,dynamic model, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
+        public IRestResponse Post(String endpoint, dynamic model, IDictionary<string, string> headers = null)
         {
-            return Process(Method.POST, endpoint, model, useSecureTokenService, headers);
+            return Process(Method.POST, endpoint, model, headers);
         }
 
-        //public IRestResponse Post(String endpoint, dynamic model,X509Certificate2Collection certificates, string contentType = null, IDictionary<string, string> headers = null)
-        //{
-        //    return Process(Method.POST, endpoint, model, certificates, contentType, headers);
-        //}
-
-        public IRestResponse Delete(String endpoint, string model, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
+        public IRestResponse Delete(String endpoint, string model, IDictionary<string, string> headers = null)
         {
-            return Process(Method.DELETE, endpoint, model, useSecureTokenService, headers);
+            return Process(Method.DELETE, endpoint, model, headers);
         }
 
-        private IRestResponse Process(Method method , string endpoint, string model, bool useSecureTokenService = false, IDictionary<string, string> headers = null, string contentType = null, X509Certificate2Collection certificates = null)
+        private IRestResponse Process(Method method , string endpoint, string model, IDictionary<string, string> headers = null, string contentType = null)
         {
             var restClient = new RestClient();
             var restRequest = new RestRequest(method);
 
             if (headers != null) restRequest.AddHeaders(headers);
 
-            if (certificates != null) restClient.ClientCertificates = certificates;
+            //if (certificates != null) restClient.ClientCertificates = certificates;
 
             restClient.BaseUrl = new Uri(endpoint);
 

@@ -20,7 +20,7 @@ namespace EEHotelBookingAssessment.TestLibrary
             test = extent.CreateTest("API_GetClientDetails").Info("API Test " + ConfigData.BookingsAPIUrl);
 
             var response = new ApiComponent();
-            var p = response.Get(ConfigData.BookingsAPIUrl, false, null);
+            var p = response.Get(ConfigData.BookingsAPIUrl, null);
             Assert.Multiple(() =>
             {
                 Assert.That(p.StatusCode.ToString(), Is.EqualTo("OK"));
@@ -32,7 +32,7 @@ namespace EEHotelBookingAssessment.TestLibrary
         public string GetLastBookingID()
         {
             var apicomponent = new ApiComponent();
-            var response = apicomponent.Get(ConfigData.BookingsAPIUrl, false, null);
+            var response = apicomponent.Get(ConfigData.BookingsAPIUrl, null);
             var stripResponse = JsonConvert.DeserializeObject(response.Content);
 
             var allbookings = JsonDocument.Parse(stripResponse.ToString());
@@ -57,7 +57,7 @@ namespace EEHotelBookingAssessment.TestLibrary
                 headers.Add("Accept", "*/*");
             };
 
-            var p = apicomponent.Get(ConfigData.BookingsAPIUrl + bookingid, false, headers);
+            var p = apicomponent.Get(ConfigData.BookingsAPIUrl + bookingid, headers);
             var split = JsonConvert.DeserializeObject(p.Content);
             var allbookings = JsonDocument.Parse(split.ToString());
             var singleBookingId = allbookings.RootElement;
