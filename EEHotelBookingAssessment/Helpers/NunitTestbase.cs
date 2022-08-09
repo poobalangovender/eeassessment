@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EEHotelBookingAssessment.Static;
 
 namespace EEHotelBookingAssessment.Helpers
 {
@@ -19,7 +20,7 @@ namespace EEHotelBookingAssessment.Helpers
         public void ExtentStart()
         {
             extent = new ExtentReports();
-            var htmlreporter = new ExtentHtmlReporter("C:\\Reports\\" + DateTime.Now.ToString("_MMddyyyyy_hhmmtt") + ".html");
+            var htmlreporter = new ExtentHtmlReporter(ConfigData.ReportDirectory + DateTime.Now.ToString("_MMddyyyyy_hhmmtt") + ".html");
             extent.AttachReporter(htmlreporter);
         }
 

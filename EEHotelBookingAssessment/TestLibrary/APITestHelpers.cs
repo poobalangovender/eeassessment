@@ -11,14 +11,13 @@ namespace EEHotelBookingAssessment.TestLibrary
 {
     public  class APITestHelpers : NunitTestbase
     {
-        public List<int> allBookingIds = new();
+        public List<int> Getbookings = new();
 
         [Test]
         public void GetClientDetails()
         {
             test = null;
-            test = extent.CreateTest("T001").Info("GetClientDetails");
-            test.Log(Status.Pass, "Test Pass");
+            test = extent.CreateTest("API_GetClientDetails").Info("API Test " + ConfigData.BookingsAPIUrl);
 
             var response = new ApiComponent();
             var p = response.Get(ConfigData.BookingsAPIUrl, false, null);
@@ -40,27 +39,27 @@ namespace EEHotelBookingAssessment.TestLibrary
 
             for (int i = 0; i < allbookings.RootElement.GetArrayLength(); i++)
             {
-                var singleBookingId = allbookings.RootElement[i];
-                var bookingId = singleBookingId.GetProperty("bookingid");
-                allBookingIds.Add(int.Parse(bookingId.ToString()));
+                var bookingidroot = allbookings.RootElement[i];
+                var bookingId = bookingidroot.GetProperty("bookingid");
+                Getbookings.Add(int.Parse(bookingId.ToString()));
             }
 
-            var lastid = allBookingIds.Last().ToString();
+            var lastid = Getbookings.Last().ToString();
             return lastid;
         }
 
         public string GetLastBookingFirstanme()
         {
             var bookingid = GetLastBookingID();
-            var response = new ApiComponent();
+            var apicomponent = new ApiComponent();
             var headers = new Dictionary<string, string>();
             {
                 headers.Add("Accept", "*/*");
             };
 
-            var p = response.Get(ConfigData.BookingsAPIUrl + bookingid, false, headers);
-            var te = JsonConvert.DeserializeObject(p.Content);
-            var allbookings = JsonDocument.Parse(te.ToString());
+            var p = apicomponent.Get(ConfigData.BookingsAPIUrl + bookingid, false, headers);
+            var split = JsonConvert.DeserializeObject(p.Content);
+            var allbookings = JsonDocument.Parse(split.ToString());
             var singleBookingId = allbookings.RootElement;
             var firstname = singleBookingId.GetProperty("firstname").ToString();
             return firstname;
