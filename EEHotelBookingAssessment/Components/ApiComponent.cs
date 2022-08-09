@@ -19,12 +19,7 @@ namespace EEHotelBookingAssessment.Components
         {
             return Process(Method.POST, endpoint, model, useSecureTokenService, headers);
         }
-
-        //public IRestResponse Post(String endpoint, dynamic model,X509Certificate2Collection certificates, string contentType = null, IDictionary<string, string> headers = null)
-        //{
-        //    return Process(Method.POST, endpoint, model, certificates, contentType, headers);
-        //}
-
+        
         public IRestResponse Delete(String endpoint, string model, bool useSecureTokenService = false, IDictionary<string, string> headers = null)
         {
             return Process(Method.DELETE, endpoint, model, useSecureTokenService, headers);
