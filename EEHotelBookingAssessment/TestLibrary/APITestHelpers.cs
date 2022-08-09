@@ -1,30 +1,39 @@
-﻿using EEHotelBookingAssessment.Components;
+﻿using AventStack.ExtentReports;
+using AventStack.ExtentReports.Reporter;  
+using EEHotelBookingAssessment.Components;
 using EEHotelBookingAssessment.Helpers;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
 using System.Text.Json;
+using EEHotelBookingAssessment.Static;
 
 namespace EEHotelBookingAssessment.TestLibrary
 {
-    public  class APITests : NunitTestbase
+    public  class APITestHelpers : NunitTestbase
     {
         public List<int> allBookingIds = new();
 
         [Test]
         public void GetClientDetails()
         {
+            test = null;
+            test = extent.CreateTest("T001").Info("GetClientDetails");
+            test.Log(Status.Pass, "Test Pass");
+
             var response = new ApiComponent();
-            var p = response.Get("http://hotel-test.equalexperts.io/", false, null);
+            var p = response.Get(ConfigData.BookingsAPIUrl, false, null);
             Assert.Multiple(() =>
             {
                 Assert.That(p.StatusCode.ToString(), Is.EqualTo("OK"));
                 Assert.That(p.ResponseStatus.ToString(), Is.EqualTo("Completed"));
+                test.Log(Status.Pass, "Test Pass");
             });
         }
 
-        public string LastBookingID()
+        public string GetLastBookingID()
         {
             var apicomponent = new ApiComponent();
-            var response = apicomponent.Get("http://hotel-test.equalexperts.io/booking/", false, null);
+            var response = apicomponent.Get(ConfigData.BookingsAPIUrl, false, null);
             var stripResponse = JsonConvert.DeserializeObject(response.Content);
 
             var allbookings = JsonDocument.Parse(stripResponse.ToString());
@@ -40,22 +49,21 @@ namespace EEHotelBookingAssessment.TestLibrary
             return lastid;
         }
 
-        [Test]
-        public void LastBookingFirstanme()
+        public string GetLastBookingFirstanme()
         {
-            var bookingid = LastBookingID();
+            var bookingid = GetLastBookingID();
             var response = new ApiComponent();
             var headers = new Dictionary<string, string>();
             {
                 headers.Add("Accept", "*/*");
             };
 
-            var p = response.Get("http://hotel-test.equalexperts.io/booking/" + bookingid, false, headers);
+            var p = response.Get(ConfigData.BookingsAPIUrl + bookingid, false, headers);
             var te = JsonConvert.DeserializeObject(p.Content);
             var allbookings = JsonDocument.Parse(te.ToString());
             var singleBookingId = allbookings.RootElement;
             var firstname = singleBookingId.GetProperty("firstname").ToString();
-            Assert.That(firstname, Is.EqualTo("TesterCPT"));
+            return firstname;
         }
     }
 }
