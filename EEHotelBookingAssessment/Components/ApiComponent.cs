@@ -32,8 +32,6 @@ namespace EEHotelBookingAssessment.Components
 
             if (headers != null) restRequest.AddHeaders(headers);
 
-            //if (certificates != null) restClient.ClientCertificates = certificates;
-
             restClient.BaseUrl = new Uri(endpoint);
 
             if (method != Method.GET)
